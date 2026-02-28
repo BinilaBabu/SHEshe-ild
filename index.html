@@ -1,0 +1,1163 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+    <title>Safer · women safety (fake call with full interface)</title>
+    <!-- OpenStreetMap via Leaflet -->
+    <link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css" />
+    <script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js"></script>
+    <!-- Font Awesome 5 -->
+    <link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.15.4/css/all.css">
+    <!-- Google Font Inter -->
+    <link href="https://fonts.googleapis.com/css2?family=Inter:opsz,wght@14..32,400;14..32,500;14..32,600;14..32,700&display=swap" rel="stylesheet">
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: 'Inter', sans-serif;
+        }
+        body {
+            background: #4a0033;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            min-height: 100vh;
+            padding: 12px;
+        }
+        .phone-mock {
+            max-width: 380px;
+            width: 100%;
+            background: #fde6f2;
+            border-radius: 44px;
+            box-shadow: 0 30px 60px rgba(0,0,0,0.6), 0 0 0 8px #8f5e7a;
+            overflow: hidden;
+            position: relative;
+            height: 720px;
+            display: flex;
+            flex-direction: column;
+            border: 2px solid #b94e7c;
+        }
+        .status-bar {
+            background: #ffd9e8;
+            padding: 12px 22px 8px;
+            display: flex;
+            justify-content: space-between;
+            font-size: 14px;
+            font-weight: 600;
+            color: black;
+            border-bottom: 1px solid #d9a6b9;
+        }
+        .app-header {
+            background: #d96c9e;
+            padding: 6px 18px;
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            color: black;
+            font-weight: 700;
+        }
+        .app-header h2 {
+            font-size: 18px;
+            font-weight: 700;
+            color: black;
+        }
+        .app-header i {
+            font-size: 20px;
+            background: rgba(255,255,255,0.3);
+            padding: 6px;
+            border-radius: 30px;
+            color: black;
+        }
+        .screen-content {
+            flex: 1;
+            overflow-y: auto;
+            padding: 18px 16px 80px;
+            scrollbar-width: thin;
+            background: #fde6f2;
+        }
+        /* login screen */
+        #loginScreen {
+            height: 100%;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            background: #fde6f2;
+            padding: 24px;
+        }
+        .logo-area {
+            text-align: center;
+            margin-bottom: 40px;
+        }
+        .logo-icon {
+            background: #d64d7a;
+            width: 80px;
+            height: 80px;
+            border-radius: 30px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            margin: 0 auto 20px;
+            color: white;
+            font-size: 44px;
+        }
+        .login-input {
+            width: 100%;
+            padding: 18px 20px;
+            font-size: 18px;
+            border: 2px solid #b94e7c;
+            border-radius: 40px;
+            margin-bottom: 16px;
+            text-align: center;
+            font-weight: 600;
+            outline: none;
+            background: #fff0f5;
+            color: black;
+        }
+        .login-btn {
+            background: #d64d7a;
+            color: white;
+            border: none;
+            padding: 18px;
+            font-size: 18px;
+            font-weight: 700;
+            border-radius: 50px;
+            width: 100%;
+            cursor: pointer;
+            box-shadow: 0 6px 0 #912d54;
+            transition: 0.1s;
+        }
+        .login-btn:active {
+            transform: translateY(4px);
+            box-shadow: 0 2px 0 #912d54;
+        }
+        #mainApp {
+            display: none;
+            height: 100%;
+            flex-direction: column;
+        }
+        /* map container */
+        .map-container {
+            height: 180px;
+            width: 100%;
+            border-radius: 28px;
+            margin-bottom: 16px;
+            border: 2px solid #e6a0c0;
+            box-shadow: 0 6px 14px rgba(0,0,0,0.1);
+            z-index: 1;
+        }
+        /* RED SOS CARD */
+        .sos-card {
+            background: #d43f61;
+            border-radius: 28px;
+            padding: 18px 16px;
+            margin-bottom: 22px;
+            color: white;
+            box-shadow: 0 12px 24px -8px #a1314b;
+            width: 100%;
+            overflow: hidden;
+        }
+        .sos-row {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            margin-bottom: 16px;
+        }
+        .sos-left h3 {
+            font-size: 20px;
+            font-weight: 700;
+            margin-bottom: 4px;
+            color: white;
+        }
+        .sos-left p {
+            font-size: 14px;
+            opacity: 0.95;
+            display: flex;
+            align-items: center;
+            gap: 6px;
+            color: white;
+        }
+        .double-tap-sos-btn {
+            background: white;
+            color: #d43f61;
+            min-width: 70px;
+            width: 70px;
+            height: 70px;
+            border-radius: 40px;
+            font-size: 28px;
+            font-weight: bold;
+            box-shadow: 0 8px 0 0 #9e2d48, 0 12px 24px rgba(0,0,0,0.2);
+            cursor: pointer;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            transition: 0.05s;
+            flex-shrink: 0;
+        }
+        .trusted-contacts-section {
+            background: rgba(255,255,255,0.15);
+            border-radius: 24px;
+            padding: 16px 14px;
+            margin: 12px 0;
+            width: 100%;
+            border: 1px solid rgba(255,255,255,0.3);
+        }
+        .trusted-contacts-section p {
+            color: white;
+            margin-bottom: 12px;
+            font-size: 15px;
+        }
+        .trusted-input-row {
+            display: flex;
+            gap: 8px;
+            align-items: center;
+            flex-wrap: wrap;
+            width: 100%;
+        }
+        .trusted-input-row input {
+            flex: 1 1 0;
+            min-width: 100px;
+            padding: 12px 14px;
+            border-radius: 40px;
+            border: none;
+            font-size: 14px;
+            background: white;
+            color: black;
+            outline: none;
+        }
+        .trusted-input-row button {
+            background: #b94e7c;
+            color: white;
+            border: none;
+            border-radius: 40px;
+            padding: 12px 20px;
+            font-weight: 600;
+            font-size: 14px;
+            cursor: pointer;
+            white-space: nowrap;
+            flex-shrink: 0;
+            box-shadow: 0 2px 4px rgba(0,0,0,0.2);
+        }
+        .emergency-officials {
+            display: grid;
+            grid-template-columns: repeat(2, 1fr);
+            gap: 8px;
+            margin-top: 12px;
+            width: 100%;
+        }
+        .official-btn {
+            background: white;
+            color: #b13e5c;
+            padding: 12px 6px;
+            border-radius: 40px;
+            font-size: 13px;
+            font-weight: 700;
+            text-align: center;
+            border: 1px solid #b13e5c;
+            cursor: pointer;
+            white-space: nowrap;
+            overflow: hidden;
+            text-overflow: ellipsis;
+        }
+        .beige-card {
+            background: #f8eedb;
+            border-radius: 28px;
+            padding: 18px 16px;
+            margin-bottom: 18px;
+            border: 1px solid #e6cca6;
+            color: black;
+            box-shadow: 0 4px 8px rgba(0,0,0,0.05);
+            width: 100%;
+            overflow: hidden;
+        }
+        .beige-title {
+            font-weight: 700;
+            margin-bottom: 12px;
+            font-size: 16px;
+            display: flex;
+            align-items: center;
+            gap: 6px;
+        }
+        /* SHAKE FEATURE */
+        .shake-container {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            gap: 16px;
+        }
+        .shake-indicator {
+            width: 100%;
+            height: 100px;
+            background: #f4e5d7;
+            border-radius: 60px;
+            display: flex;
+            align-items: center;
+            justify-content: space-around;
+            padding: 0 20px;
+            transition: all 0.3s ease;
+            border: 2px solid #e6cca6;
+        }
+        .shake-indicator.shaking {
+            background: #d43f61;
+            transform: scale(1.02);
+            box-shadow: 0 0 30px #ff6b8b;
+        }
+        .shake-indicator.shaking i, .shake-indicator.shaking span {
+            color: white;
+        }
+        .shake-wave {
+            display: flex;
+            align-items: center;
+            gap: 8px;
+        }
+        .shake-wave i {
+            font-size: 28px;
+            color: #b94e7c;
+            transition: all 0.2s;
+        }
+        .shake-indicator.shaking .shake-wave i {
+            animation: wave 0.3s infinite alternate;
+            color: white;
+        }
+        .shake-wave i:nth-child(1) { animation-delay: 0s; }
+        .shake-wave i:nth-child(2) { animation-delay: 0.1s; }
+        .shake-wave i:nth-child(3) { animation-delay: 0.2s; }
+        .shake-wave i:nth-child(4) { animation-delay: 0.3s; }
+        
+        @keyframes wave {
+            0% { transform: translateY(0) rotate(0deg); opacity: 0.5; }
+            100% { transform: translateY(-20px) rotate(10deg); opacity: 1; }
+        }
+        .shake-metrics {
+            display: flex;
+            flex-direction: column;
+            align-items: flex-end;
+            font-size: 12px;
+        }
+        .shake-value {
+            font-weight: 700;
+            font-size: 18px;
+            color: #b13e5c;
+        }
+        .shake-indicator.shaking .shake-value {
+            color: white;
+        }
+        .gyro-permission-btn {
+            background: #d96c9e;
+            color: white;
+            border: none;
+            border-radius: 40px;
+            padding: 14px 20px;
+            font-size: 14px;
+            font-weight: 600;
+            cursor: pointer;
+            width: 100%;
+            transition: 0.1s;
+        }
+        .gyro-permission-btn.active {
+            background: #27ae60;
+        }
+        .gyro-status {
+            font-size: 12px;
+            text-align: center;
+            padding: 8px;
+            border-radius: 40px;
+            background: rgba(255,255,255,0.5);
+            width: 100%;
+        }
+        .gyro-status.active {
+            background: #27ae60;
+            color: white;
+        }
+        .share-link-btn {
+            color: #b13e5c;
+            cursor: pointer;
+            display: inline-flex;
+            align-items: center;
+            gap: 4px;
+            padding: 6px 10px;
+            border-radius: 40px;
+            background: rgba(255,255,255,0.5);
+            transition: background 0.2s;
+            font-weight: 600;
+        }
+        .share-link-btn:hover {
+            background: rgba(255,255,255,0.8);
+        }
+        .live-row {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin: 8px 0;
+            flex-wrap: wrap;
+            gap: 8px;
+        }
+        #liveCoord {
+            font-size: 13px;
+            word-break: break-word;
+        }
+        .comments-section {
+            background: #f4e5d7;
+            border-radius: 20px;
+            padding: 12px;
+            margin-top: 12px;
+        }
+        .comment-item {
+            background: white;
+            border-radius: 30px;
+            padding: 8px 14px;
+            margin: 8px 0;
+            font-size: 13px;
+            word-break: break-word;
+        }
+        .add-comment {
+            display: flex;
+            gap: 8px;
+            margin-top: 12px;
+            flex-wrap: wrap;
+        }
+        .add-comment input {
+            flex: 1;
+            min-width: 150px;
+            background: white;
+            border: 1px solid #b94e7c;
+            border-radius: 40px;
+            padding: 10px 16px;
+            outline: none;
+        }
+        .add-comment button {
+            background: #d64d7a;
+            color: white;
+            border: none;
+            border-radius: 40px;
+            padding: 10px 20px;
+            font-weight: 600;
+            cursor: pointer;
+            white-space: nowrap;
+        }
+        /* FAKE CALL STYLES */
+        .fake-call-row {
+            background: #f8eedb;
+            border-radius: 22px;
+            padding: 16px;
+            display: flex;
+            align-items: center;
+            gap: 18px;
+            margin-bottom: 16px;
+            flex-wrap: wrap;
+        }
+        .fake-avatar {
+            background: #b94e7c;
+            width: 52px;
+            height: 52px;
+            border-radius: 28px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: white;
+            font-size: 28px;
+            flex-shrink: 0;
+        }
+        .call-screen-sim {
+            background: #e6cca6;
+            border-radius: 40px;
+            padding: 20px;
+            text-align: center;
+            cursor: pointer;
+        }
+        /* FULL-SCREEN FAKE CALL INTERFACE */
+        .fake-call-overlay {
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: linear-gradient(145deg, #1a3b2d, #0e2a1f);
+            z-index: 1000;
+            display: flex;
+            flex-direction: column;
+            border-radius: 44px;
+            overflow: hidden;
+            color: white;
+        }
+        .fake-call-header {
+            background: rgba(0,0,0,0.3);
+            padding: 20px;
+            text-align: center;
+            font-size: 14px;
+            color: #b0e0c0;
+        }
+        .fake-call-avatar {
+            width: 120px;
+            height: 120px;
+            background: #2a5a44;
+            border-radius: 60px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            margin: 30px auto 15px;
+            border: 4px solid #4caf7a;
+        }
+        .fake-call-avatar i {
+            font-size: 60px;
+            color: white;
+        }
+        .fake-caller-name {
+            font-size: 32px;
+            font-weight: 700;
+            text-align: center;
+            margin-bottom: 8px;
+        }
+        .fake-call-status {
+            text-align: center;
+            font-size: 16px;
+            color: #a0d8b0;
+            margin-bottom: 40px;
+        }
+        .fake-call-timer {
+            font-size: 48px;
+            font-weight: 300;
+            text-align: center;
+            margin-bottom: 30px;
+            font-family: monospace;
+            letter-spacing: 2px;
+        }
+        .fake-call-actions {
+            display: flex;
+            justify-content: space-around;
+            padding: 20px;
+            margin-top: auto;
+            margin-bottom: 30px;
+        }
+        .fake-call-action {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            gap: 8px;
+            cursor: pointer;
+        }
+        .fake-call-action i {
+            font-size: 32px;
+            background: rgba(255,255,255,0.15);
+            width: 60px;
+            height: 60px;
+            border-radius: 30px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+        .fake-call-action.end-call i {
+            background: #d43f61;
+            transform: rotate(135deg);
+        }
+        .fake-call-action span {
+            font-size: 12px;
+        }
+        .fake-call-close {
+            position: absolute;
+            top: 20px;
+            right: 20px;
+            background: rgba(255,255,255,0.2);
+            width: 40px;
+            height: 40px;
+            border-radius: 20px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            cursor: pointer;
+            z-index: 1001;
+        }
+        .stay-category {
+            background: #f8eedb;
+            border-radius: 24px;
+            padding: 14px;
+            margin: 12px 0;
+            border: 1px solid #e6cca6;
+        }
+        .trusted-user-row {
+            display: flex;
+            justify-content: space-between;
+            background: #f8eedb;
+            padding: 12px 18px;
+            border-radius: 40px;
+            margin: 8px 0;
+            border: 1px solid #e6cca6;
+            flex-wrap: wrap;
+            gap: 8px;
+        }
+        .bottom-nav {
+            background: #ffd9e8;
+            backdrop-filter: blur(12px);
+            padding: 12px 28px;
+            display: flex;
+            justify-content: space-between;
+            border-top: 1px solid #d9a6b9;
+            font-size: 22px;
+            color: black;
+            flex-shrink: 0;
+        }
+        .toast-msg {
+            background: #333;
+            color: white;
+            padding: 12px 18px;
+            border-radius: 60px;
+            font-size: 14px;
+            margin-bottom: 16px;
+            display: flex;
+            align-items: center;
+            gap: 12px;
+            box-shadow: 0 8px 20px black;
+            word-break: break-word;
+        }
+        .weather-indicator {
+            margin-top:8px; 
+            background:#e6cca6; 
+            border-radius:40px; 
+            padding:8px 12px; 
+            display:flex; 
+            justify-content:space-between;
+        }
+    </style>
+</head>
+<body>
+<div class="phone-mock" id="phoneMock">
+    <div class="status-bar"><span>9:41</span><span><i class="fas fa-signal"></i> <i class="fas fa-wifi"></i> <i class="fas fa-battery-full"></i></span></div>
+
+    <!-- LOGIN SCREEN -->
+    <div id="loginScreen">
+        <div class="logo-area">
+            <div class="logo-icon"><i class="fas fa-shield-alt"></i></div>
+            <h2 style="font-size:28px; color:black;">Safer</h2>
+            <p style="color:#5a3a48;">login with user ID & password</p>
+        </div>
+        <input type="text" class="login-input" id="userId" placeholder="user ID (e.g. @safe)" value="@safe_woman">
+        <input type="password" class="login-input" id="password" placeholder="password" value="123456">
+        <button class="login-btn" id="loginBtn"><i class="fas fa-arrow-right"></i> login</button>
+        <p class="hint">use any ID/password for demo</p>
+    </div>
+
+    <!-- MAIN APP -->
+    <div id="mainApp">
+        <div class="app-header">
+            <i class="fas fa-bars"></i>
+            <h2>Safer · pink mode</h2>
+            <i class="fas fa-user-circle" id="logoutIcon" style="cursor:pointer;"></i>
+        </div>
+        <div class="screen-content" id="screenContent">
+            <div id="liveAlertPlaceholder"></div>
+
+            <!-- ========== 1. DOUBLE TAP SOS ========= -->
+            <div class="sos-card">
+                <div class="sos-row">
+                    <div class="sos-left">
+                        <h3>🆘 DOUBLE TAP SOS</h3>
+                        <p><i class="fas fa-hand-pointer"></i> double tap red button</p>
+                    </div>
+                    <div class="double-tap-sos-btn" id="doubleTapSos">SOS</div>
+                </div>
+                
+                <div class="trusted-contacts-section">
+                    <p><i class="fas fa-user-check"></i> Trusted contact (set below)</p>
+                    <div class="trusted-input-row">
+                        <input type="text" id="trustedContactName" placeholder="Name" value="Rahul">
+                        <input type="tel" id="trustedContactPhone" placeholder="Phone" value="9876543210">
+                        <button id="setTrustedBtn">Set</button>
+                    </div>
+                </div>
+                <p style="font-size:13px; margin-top:10px; color:white;"><i class="fas fa-sms"></i> double tap: SMS + call to trusted</p>
+
+                <div class="emergency-officials">
+                    <div class="official-btn" data-official="100">👮 100 (police)</div>
+                    <div class="official-btn" data-official="1091">👩 1091 (pink)</div>
+                    <div class="official-btn" data-official="108">🚑 108 (ambulance)</div>
+                    <div class="official-btn" data-official="112">📞 112 (integrated)</div>
+                </div>
+            </div>
+
+            <!-- 2. LIVE LOCATION TRACKING -->
+            <div class="beige-card" id="liveTrackCard">
+                <div class="beige-title"><i class="fas fa-map-marked-alt"></i> 2. Live location tracking</div>
+                <div id="liveMap" class="map-container"></div>
+                <div class="live-row">
+                    <span id="liveCoord">Fetching location...</span>
+                    <span class="share-link-btn" id="shareLinkBtn">
+                        <i class="fas fa-share-alt"></i> share link
+                    </span>
+                </div>
+                <p style="font-size:12px;">tracking 10-15 min · link sharable</p>
+                <div class="weather-indicator">
+                    <span>26°C</span>
+                    <span>Partly cloudy <i class="fas fa-cloud-sun"></i></span>
+                </div>
+            </div>
+
+            <!-- 3. SHAKE TO ALERT - REAL GYRO -->
+            <div class="beige-card" id="shakeCard">
+                <div class="beige-title"><i class="fas fa-mobile-alt"></i> 3. Shake to alert (real gyro)</div>
+                <div class="shake-container">
+                    <div class="shake-indicator" id="shakeIndicator">
+                        <div class="shake-wave">
+                            <i class="fas fa-mobile-alt"></i>
+                            <i class="fas fa-mobile-alt"></i>
+                            <i class="fas fa-mobile-alt"></i>
+                            <i class="fas fa-mobile-alt"></i>
+                        </div>
+                        <div class="shake-metrics">
+                            <span class="shake-value" id="shakeForce">0.0</span>
+                            <span>g-force</span>
+                        </div>
+                    </div>
+                    
+                    <button class="gyro-permission-btn" id="gyroPermissionBtn">
+                        <i class="fas fa-sync-alt"></i> Enable gyroscope
+                    </button>
+                    
+                    <div class="gyro-status" id="gyroStatus">
+                        ⏺ Gyroscope inactive · tap to enable
+                    </div>
+                    
+                    <div class="shake-status" id="shakeSosStatus">
+                        ⏺ Shake threshold: 2.5g
+                    </div>
+                </div>
+                <p style="font-size:12px; margin-top:8px; text-align:center;">Physically shake your phone → triggers SOS at 2.5g</p>
+            </div>
+
+            <!-- 4. DANGER ZONE MAP -->
+            <div class="beige-card" id="dangerZoneCard">
+                <div class="beige-title"><i class="fas fa-map"></i> 4. Danger zone map</div>
+                <div id="dangerMap" class="map-container"></div>
+                <div style="display:flex; gap:12px; margin:10px 0; flex-wrap:wrap;">
+                    <span style="background:#d43f61; color:white; padding:6px 12px; border-radius:30px;">safety score: 42</span>
+                    <span>🔴 red zone nearby</span>
+                </div>
+                <div style="font-size:13px; margin:5px 0;">📍 Barkatpur · Amberpet · Chandigarh</div>
+                <div class="comments-section">
+                    <p><strong><i class="fas fa-comments"></i> user experiences</strong></p>
+                    <div id="commentsList">
+                        <div class="comment-item">@riya: felt unsafe near metro</div>
+                        <div class="comment-item">@neha: dark street, avoid</div>
+                    </div>
+                    <div class="add-comment">
+                        <input type="text" id="newComment" placeholder="add your experience...">
+                        <button id="postCommentBtn">Post</button>
+                    </div>
+                </div>
+                <p style="font-size:12px; margin-top:8px;"><i class="fas fa-sms"></i> alert via SMS when entering zone</p>
+            </div>
+
+            <!-- 5. FAKE CALL - UPDATED WITH FULL INTERFACE -->
+            <div class="beige-card" id="fakeCallCard">
+                <div class="beige-title"><i class="fas fa-phone-alt"></i> 5. Fake call</div>
+                <div class="fake-call-row">
+                    <div class="fake-avatar"><i class="fas fa-user-tie"></i></div>
+                    <div style="flex:1;">
+                        <p style="margin-bottom:6px;">caller: <span id="fakeCallerName">Dad</span></p>
+                        <div style="display:flex; gap:6px; flex-wrap:wrap;">
+                            <input type="text" id="setFakeNameInput" placeholder="set caller name" style="flex:1; min-width:120px; padding:8px; border-radius:30px; border:1px solid gray;">
+                            <button id="setFakeNameBtn" style="background:#d64d7a; color:white; border:none; border-radius:30px; padding:8px 16px;">set</button>
+                        </div>
+                    </div>
+                </div>
+                <div class="call-screen-sim" id="fakeCallTrigger">
+                    <i class="fas fa-phone fa-3x" style="color:#2e7d32;"></i>
+                    <p style="font-weight:700;">tap to start fake call</p>
+                </div>
+            </div>
+
+            <!-- 6. SAFE STAY -->
+            <div class="beige-card" id="safeStayCard">
+                <div class="beige-title"><i class="fas fa-bed"></i> 6. Safe stay</div>
+                <div class="stay-category">
+                    <p><strong>🏨 trusted residence</strong> · Tulsi stay (24/7) ⭐4.8</p>
+                    <p><i class="fas fa-clock"></i> open · rooms: 3</p>
+                </div>
+                <div class="stay-category">
+                    <p><strong>🍱 food & necessities</strong> · Anjali cafe (open till 11pm) · grocery 24h</p>
+                </div>
+                <div class="stay-category">
+                    <p><strong>🚖 safe transport</strong> · Priya cabs ⭐4.9 · women drivers</p>
+                </div>
+                <p style="font-size:12px;">based on user reviews</p>
+            </div>
+
+            <!-- 7. NEARBY TRUSTED USERS -->
+            <div class="beige-card" id="trustedUserCard">
+                <div class="beige-title"><i class="fas fa-users"></i> 7. Nearby trusted users</div>
+                <div class="trusted-user-row">
+                    <span><i class="fas fa-user-circle"></i> @anita_raj (200m)</span>
+                    <span><i class="fas fa-comment" style="color:#b13e5c; cursor:pointer;"></i> <i class="fas fa-phone" style="color:#27ae60; cursor:pointer; margin-left:8px;"></i></span>
+                </div>
+                <div class="trusted-user-row">
+                    <span><i class="fas fa-user-circle"></i> @meera_s (450m)</span>
+                    <span><i class="fas fa-comment" style="color:#b13e5c; cursor:pointer;"></i> <i class="fas fa-phone" style="color:#27ae60; cursor:pointer; margin-left:8px;"></i></span>
+                </div>
+                <div class="trusted-user-row">
+                    <span><i class="fas fa-user-circle"></i> @priya_w (800m)</span>
+                    <span><i class="fas fa-comment" style="color:#b13e5c; cursor:pointer;"></i> <i class="fas fa-phone" style="color:#27ae60; cursor:pointer; margin-left:8px;"></i></span>
+                </div>
+            </div>
+        </div>
+
+        <!-- bottom nav -->
+        <div class="bottom-nav">
+            <i class="fas fa-home nav-item active"></i>
+            <i class="fas fa-map-marked-alt nav-item"></i>
+            <i class="fas fa-bell nav-item"></i>
+            <i class="fas fa-user nav-item"></i>
+        </div>
+    </div>
+
+    <!-- FAKE CALL OVERLAY (hidden by default) -->
+    <div id="fakeCallOverlay" class="fake-call-overlay" style="display: none;">
+        <div class="fake-call-header">
+            <i class="fas fa-wifi"></i> Call active ·  <i class="fas fa-battery-three-quarters"></i>
+        </div>
+        <div class="fake-call-close" id="fakeCallClose">
+            <i class="fas fa-times"></i>
+        </div>
+        
+        <div class="fake-call-avatar">
+            <i class="fas fa-user-tie"></i>
+        </div>
+        
+        <div class="fake-caller-name" id="fakeOverlayCallerName">Dad</div>
+        <div class="fake-call-status">Connected · 00:00</div>
+        
+        <div class="fake-call-timer" id="fakeCallTimer">00:00</div>
+        
+        <div class="fake-call-actions">
+            <div class="fake-call-action">
+                <i class="fas fa-microphone-slash"></i>
+                <span>mute</span>
+            </div>
+            <div class="fake-call-action">
+                <i class="fas fa-volume-up"></i>
+                <span>speaker</span>
+            </div>
+            <div class="fake-call-action">
+                <i class="fas fa-keyboard"></i>
+                <span>keypad</span>
+            </div>
+            <div class="fake-call-action end-call" id="fakeCallEnd">
+                <i class="fas fa-phone"></i>
+                <span>end call</span>
+            </div>
+        </div>
+        
+        <div style="text-align: center; padding: 10px; color: #a0d8b0; font-size: 12px;">
+            Tap "end call" to escape
+        </div>
+    </div>
+</div>
+
+<script>
+    (function() {
+        // LOGIN
+        const loginScreen = document.getElementById('loginScreen');
+        const mainApp = document.getElementById('mainApp');
+        const loginBtn = document.getElementById('loginBtn');
+        const logoutIcon = document.getElementById('logoutIcon');
+        const phoneMock = document.getElementById('phoneMock');
+
+        loginBtn.addEventListener('click', function() {
+            loginScreen.style.display = 'none';
+            mainApp.style.display = 'flex';
+            showToast('✅ Logged in · pink mode');
+            initLiveMap();
+            initDangerMap();
+        });
+
+        logoutIcon.addEventListener('click', function() {
+            mainApp.style.display = 'none';
+            loginScreen.style.display = 'flex';
+            if (watchId) navigator.geolocation.clearWatch(watchId);
+            stopGyro();
+            
+            // Close fake call if open
+            document.getElementById('fakeCallOverlay').style.display = 'none';
+        });
+
+        // TOAST FUNCTION
+        function showToast(msg, bg = '#2d3c5e') {
+            const placeholder = document.getElementById('liveAlertPlaceholder');
+            const toast = document.createElement('div');
+            toast.className = 'toast-msg';
+            toast.style.background = bg;
+            toast.innerHTML = `<i class="fas fa-info-circle"></i> <span>${msg}</span> <i class="fas fa-times" style="margin-left:auto;" onclick="this.parentElement.remove()"></i>`;
+            placeholder.appendChild(toast);
+            setTimeout(() => { if(toast.parentNode) toast.remove(); }, 4000);
+        }
+
+        // DOUBLE TAP SOS
+        const sosBtn = document.getElementById('doubleTapSos');
+        let lastTap = 0;
+        sosBtn.addEventListener('click', function() {
+            let now = new Date().getTime();
+            if (now - lastTap < 400) {
+                const name = document.getElementById('trustedContactName').value || 'Rahul';
+                const phone = document.getElementById('trustedContactPhone').value || '9876543210';
+                triggerSos(`🆘 SOS · Alerting ${name} (${phone}) and emergency services`);
+            } else {
+                lastTap = now;
+                showToast('👆 Tap again to confirm SOS', '#b94e7c');
+            }
+        });
+
+        document.getElementById('setTrustedBtn').addEventListener('click', function() {
+            showToast(`✅ Trusted contact updated`);
+        });
+
+        document.querySelectorAll('.official-btn').forEach(btn => {
+            btn.addEventListener('click', function() {
+                let num = this.dataset.official;
+                showToast(`📞 Calling emergency ${num}`, '#27ae60');
+            });
+        });
+
+        // GYROSCOPE SHAKE DETECTION
+        const shakeIndicator = document.getElementById('shakeIndicator');
+        const gyroStatus = document.getElementById('gyroStatus');
+        const shakeSosStatus = document.getElementById('shakeSosStatus');
+        const shakeForceDisplay = document.getElementById('shakeForce');
+        const gyroPermissionBtn = document.getElementById('gyroPermissionBtn');
+        
+        let shakeThreshold = 2.5;
+        let lastShakeTime = 0;
+        let isGyroActive = false;
+        let motionHandler = null;
+        
+        if (window.DeviceMotionEvent) {
+            gyroStatus.innerHTML = '⏺ Gyroscope available · tap to enable';
+        } else {
+            gyroStatus.innerHTML = '❌ Gyroscope not supported';
+            gyroPermissionBtn.disabled = true;
+        }
+        
+        function requestGyroPermission() {
+            if (typeof DeviceMotionEvent.requestPermission === 'function') {
+                DeviceMotionEvent.requestPermission()
+                    .then(permissionState => {
+                        if (permissionState === 'granted') {
+                            enableGyro();
+                        } else {
+                            showToast('❌ Gyroscope permission denied', '#b91c1c');
+                        }
+                    })
+                    .catch(console.error);
+            } else {
+                enableGyro();
+            }
+        }
+        
+        function enableGyro() {
+            isGyroActive = true;
+            gyroStatus.innerHTML = '✅ Gyroscope ACTIVE · shake to trigger';
+            gyroStatus.classList.add('active');
+            gyroPermissionBtn.innerHTML = '<i class="fas fa-check"></i> Gyroscope enabled';
+            gyroPermissionBtn.classList.add('active');
+            
+            motionHandler = function(event) {
+                if (!isGyroActive) return;
+                
+                const acceleration = event.accelerationIncludingGravity;
+                if (!acceleration) return;
+                
+                const { x = 0, y = 0, z = 0 } = acceleration;
+                const gForce = Math.sqrt(x*x + y*y + z*z) / 9.81;
+                
+                shakeForceDisplay.innerText = gForce.toFixed(2);
+                
+                if (gForce > 1.5) {
+                    shakeIndicator.style.background = '#ffd700';
+                } else {
+                    shakeIndicator.style.background = '#f4e5d7';
+                }
+                
+                if (gForce > shakeThreshold) {
+                    const now = Date.now();
+                    if (now - lastShakeTime > 3000) {
+                        lastShakeTime = now;
+                        triggerSos('🚨 SHAKE DETECTED! SOS triggered by gyroscope');
+                        
+                        shakeIndicator.classList.add('shaking');
+                        setTimeout(() => {
+                            shakeIndicator.classList.remove('shaking');
+                        }, 2000);
+                        
+                        if (navigator.vibrate) navigator.vibrate([200, 100, 200]);
+                    }
+                }
+            };
+            
+            window.addEventListener('devicemotion', motionHandler);
+            showToast('🎯 Gyroscope enabled · try shaking your phone!', '#27ae60');
+        }
+        
+        function stopGyro() {
+            isGyroActive = false;
+            if (motionHandler) {
+                window.removeEventListener('devicemotion', motionHandler);
+            }
+            gyroStatus.innerHTML = '⏺ Gyroscope inactive';
+            gyroStatus.classList.remove('active');
+            gyroPermissionBtn.innerHTML = '<i class="fas fa-sync-alt"></i> Enable gyroscope';
+            gyroPermissionBtn.classList.remove('active');
+            shakeForceDisplay.innerText = '0.0';
+        }
+        
+        gyroPermissionBtn.addEventListener('click', requestGyroPermission);
+
+        // ===== FAKE CALL FULL INTERFACE =====
+        const fakeCallOverlay = document.getElementById('fakeCallOverlay');
+        const fakeCallTrigger = document.getElementById('fakeCallTrigger');
+        const fakeCallClose = document.getElementById('fakeCallClose');
+        const fakeCallEnd = document.getElementById('fakeCallEnd');
+        const fakeOverlayCallerName = document.getElementById('fakeOverlayCallerName');
+        const fakeCallerName = document.getElementById('fakeCallerName');
+        const setFakeNameBtn = document.getElementById('setFakeNameBtn');
+        const setFakeNameInput = document.getElementById('setFakeNameInput');
+        const fakeCallTimer = document.getElementById('fakeCallTimer');
+        
+        let timerInterval = null;
+        let seconds = 0;
+        
+        // Set caller name
+        setFakeNameBtn.addEventListener('click', function() {
+            let newName = setFakeNameInput.value.trim();
+            if (newName) {
+                fakeCallerName.innerText = newName;
+                fakeOverlayCallerName.innerText = newName;
+            }
+        });
+        
+        // Open fake call overlay
+        fakeCallTrigger.addEventListener('click', function() {
+            // Update caller name in overlay
+            fakeOverlayCallerName.innerText = fakeCallerName.innerText;
+            
+            // Show overlay
+            fakeCallOverlay.style.display = 'flex';
+            
+            // Start timer
+            seconds = 0;
+            updateTimer();
+            if (timerInterval) clearInterval(timerInterval);
+            timerInterval = setInterval(() => {
+                seconds++;
+                updateTimer();
+            }, 1000);
+            
+            // Vibrate to simulate incoming call
+            if (navigator.vibrate) navigator.vibrate([200, 100, 200]);
+        });
+        
+        function updateTimer() {
+            const mins = Math.floor(seconds / 60);
+            const secs = seconds % 60;
+            fakeCallTimer.innerText = `${mins.toString().padStart(2, '0')}:${secs.toString().padStart(2, '0')}`;
+        }
+        
+        // Close fake call (X button)
+        fakeCallClose.addEventListener('click', function() {
+            fakeCallOverlay.style.display = 'none';
+            if (timerInterval) clearInterval(timerInterval);
+        });
+        
+        // End call button
+        fakeCallEnd.addEventListener('click', function() {
+            fakeCallOverlay.style.display = 'none';
+            if (timerInterval) clearInterval(timerInterval);
+            showToast('📞 Call ended · You escaped!', '#27ae60');
+        });
+        
+        // Also close when tapping outside? No, only with buttons.
+
+        // SHARE LINK
+        document.getElementById('shareLinkBtn').addEventListener('click', function() {
+            const lat = currentLat.toFixed(4);
+            const lng = currentLng.toFixed(4);
+            const shareUrl = `https://maps.safer.com/track?lat=${lat}&lng=${lng}&user=${encodeURIComponent(document.getElementById('userId').value || '@safe_woman')}`;
+            
+            navigator.clipboard?.writeText(shareUrl).catch(() => {});
+            showToast(`📍 Live location link copied`, '#b13e5c');
+        });
+
+        // COMMENT
+        document.getElementById('postCommentBtn').addEventListener('click', function() {
+            let comment = document.getElementById('newComment').value.trim();
+            if (!comment) return;
+            let list = document.getElementById('commentsList');
+            let newDiv = document.createElement('div');
+            newDiv.className = 'comment-item';
+            newDiv.innerText = '@you: ' + comment;
+            list.appendChild(newDiv);
+            document.getElementById('newComment').value = '';
+            showToast('💬 Comment added');
+        });
+
+        // TRUSTED USER MESSAGE/CALL
+        document.getElementById('trustedUserCard').addEventListener('click', function(e) {
+            if (e.target.classList.contains('fa-comment')) {
+                showToast('💬 DM sent to trusted user');
+            } else if (e.target.classList.contains('fa-phone')) {
+                showToast('📞 Calling trusted user');
+            }
+        });
+
+        // SOS trigger function
+        function triggerSos(message) {
+            showToast(message, '#b91c1c');
+            
+            const name = document.getElementById('trustedContactName').value || 'Rahul';
+            const phone = document.getElementById('trustedContactPhone').value || '9876543210';
+            
+            showToast(`📱 SMS to ${name} (${phone}): Live location - ${currentLat.toFixed(4)}, ${currentLng.toFixed(4)}`, '#27ae60');
+            showToast(`📞 Calling ${name}...`, '#27ae60');
+            showToast(`🚨 Alerting emergency services: 100, 1091, 108, 112`, '#b13e5c');
+            
+            if (navigator.vibrate) navigator.vibrate(500);
+        }
+
+        // MAPS
+        let watchId = null;
+        let currentLat = 17.3850, currentLng = 78.4867;
+        let liveMap, liveMarker, dangerMap, dangerMarker;
+
+        if (navigator.geolocation) {
+            watchId = navigator.geolocation.watchPosition(
+                (pos) => {
+                    currentLat = pos.coords.latitude;
+                    currentLng = pos.coords.longitude;
+                    document.getElementById('liveCoord').innerHTML = `<i class="fas fa-circle"></i> Lat: ${currentLat.toFixed(4)}, Lng: ${currentLng.toFixed(4)}`;
+                    if (liveMarker) liveMarker.setLatLng([currentLat, currentLng]);
+                    if (dangerMarker) dangerMarker.setLatLng([currentLat, currentLng]);
+                },
+                (err) => { 
+                    document.getElementById('liveCoord').innerHTML = '📍 Using default location (Hyderabad)';
+                },
+                { enableHighAccuracy: true }
+            );
+        }
+
+        function initLiveMap() {
+            if (!liveMap) {
+                liveMap = L.map('liveMap').setView([currentLat, currentLng], 16);
+                L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', { attribution: '© OSM' }).addTo(liveMap);
+                liveMarker = L.marker([currentLat, currentLng]).addTo(liveMap).bindPopup('You').openPopup();
+            }
+        }
+        function initDangerMap() {
+            if (!dangerMap) {
+                dangerMap = L.map('dangerMap').setView([currentLat, currentLng], 15);
+                L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', { attribution: '© OSM' }).addTo(dangerMap);
+                L.circle([currentLat + 0.005, currentLng - 0.005], { radius: 200, color: '#b91c1c', fillColor: '#f00', fillOpacity: 0.4 }).addTo(dangerMap).bindPopup('🔴 red zone');
+                L.circle([currentLat - 0.003, currentLng + 0.004], { radius: 150, color: '#b45309', fillOpacity: 0.3 }).addTo(dangerMap).bindPopup('🟡 moderate');
+                dangerMarker = L.marker([currentLat, currentLng]).addTo(dangerMap).bindPopup('You').openPopup();
+            }
+        }
+    })();
+</script>
+</body>
+</html>
