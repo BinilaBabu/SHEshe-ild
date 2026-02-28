@@ -2,27 +2,27 @@
   <img src="./img.png" alt="Project Banner" width="100%">
 </p>
 
-# [Project Name] 🎯
+# SHEshe-ild 🎯
 
 ## Basic Details
 
-### Team Name: [Name]
+### Team Name: TechDivas
 
 ### Team Members
-- Member 1: [Name] - [College]
-- Member 2: [Name] - [College]
+- Member 1: Angel s.m - College of Engineering Perumon
+- Member 2: Binila Babu -  College of Engineering Perumon
 
 ### Hosted Project Link
-[mention your project hosted link here]
+https://binilababu.github.io/SHE-ld/
 
 ### Project Description
-[2-3 lines about what your project does]
+it's a software for women safety , provides offline sos,danger zone map, shake alert system,if yor are in danger ,you can contact neraby trusted users.
 
 ### The Problem statement
-[What problem are you solving?]
+women faces unsafe situations daily, and poor network access makes many apps unreliable.
 
 ### The Solution
-[How are you solving it?]
+our app ensures safety through offline-first sos, live tracking and community alerts.
 
 ---
 
@@ -31,10 +31,8 @@
 ### Technologies/Components Used
 
 **For Software:**
-- Languages used: [e.g., JavaScript, Python, Java]
-- Frameworks used: [e.g., React, Django, Spring Boot]
-- Libraries used: [e.g., axios, pandas, JUnit]
-- Tools used: [e.g., VS Code, Git, Docker]
+- Languages used:  html,css,JavaScript
+- Tools used:  VS Code, Git
 
 **For Hardware:**
 - Main components: [List main components]
@@ -46,10 +44,13 @@
 ## Features
 
 List the key features of your project:
-- Feature 1: [Description]
-- Feature 2: [Description]
-- Feature 3: [Description]
-- Feature 4: [Description]
+- SOS : BY DOUBLE TAP sends sms of live location to the contact sends and gives alert calls to the saved contact and other officals like police.
+- Live location tracking : shares live location and continue tracking 
+- shake to alert:shake phone 3 times to trigger sos
+- danger zone map: shows danger zone if any in neraby places, users can comment on the places others can see their comments.
+- fake call: by tapping fake call it displays calling interface of anyone you sets(mom,police....)
+- stay safe : provides details of trusted hotels and homestays.
+- nearby trusted users : can message or call any trusted users by their user id showing on their screen
 
 ---
 
@@ -83,14 +84,21 @@ List the key features of your project:
 
 #### Screenshots (Add at least 3)
 
-![Screenshot1](Add screenshot 1 here with proper name)
-*Add caption explaining what this shows*
+!<img width="525" height="887" alt="sos tracking" src="https://github.com/user-attachments/assets/3ac5c1e7-636e-40f2-b34b-641220c1c10d" />
+(Add screenshot 1 here with proper name)
+shows sos with emergency contacts and live map with sharable link
 
-![Screenshot2](Add screenshot 2 here with proper name)
-*Add caption explaining what this shows*
+![<img width="499" height="890" alt="shaketoalert dangerzonemap" src="https://github.com/user-attachments/assets/72dba319-5a79-4b29-89a2-5c7bc4b013a6" />
+](Add screenshot 2 here with proper name)
+shows shake to alert system and when the mobile is shaked 3 times sos triggers to the emergency contacts.
 
-![Screenshot3](Add screenshot 3 here with proper name)
-*Add caption explaining what this shows*
+![<img width="441" height="864" alt="danger-zonemap" src="https://github.com/user-attachments/assets/08edf791-c4a6-4371-9748-c83a636c2276" />
+](Add screenshot 3 here with proper name)
+shows danger zone in nearby areas and others experience and user can post thier own experience
+
+![<img width="475" height="881" alt="fakecall" src="https://github.com/user-attachments/assets/ea57bf2b-a6df-4411-bb46-68c931074389" /> ]
+shows fake call
+
 
 #### Diagrams
 
