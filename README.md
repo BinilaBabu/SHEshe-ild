@@ -84,8 +84,9 @@ List the key features of your project:
 
 #### Screenshots (Add at least 3)
 
-!<img width="525" height="887" alt="sos tracking" src="https://github.com/user-attachments/assets/3ac5c1e7-636e-40f2-b34b-641220c1c10d" />
-(Add screenshot 1 here with proper name)
+!<p align ="center">
+  <img src=./sos&tracking.png" width ="400">
+</p>
 shows sos with emergency contacts and live map with sharable link
 
 ![<img width="499" height="890" alt="shaketoalert dangerzonemap" src="https://github.com/user-attachments/assets/72dba319-5a79-4b29-89a2-5c7bc4b013a6" />
